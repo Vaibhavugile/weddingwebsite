@@ -1,0 +1,491 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap');
+
+.wedding-events-section {
+  position: relative;
+  overflow: hidden;
+  padding: 76px 20px 65px;
+  background:
+    radial-gradient(ellipse at 10% 15%, rgba(224, 177, 139, .13), transparent 35%),
+    radial-gradient(ellipse at 90% 85%, rgba(181, 119, 104, .10), transparent 35%),
+    #fbf6ee;
+  color: #573c37;
+}
+
+.events-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.events-background-flower {
+  position: absolute;
+  color: rgba(174, 127, 85, .12);
+  pointer-events: none;
+  font-family: serif;
+}
+
+.events-flower-one {
+  top: 100px;
+  left: -20px;
+  font-size: 150px;
+  transform: rotate(-20deg);
+}
+
+.events-flower-two {
+  right: -20px;
+  bottom: 60px;
+  font-size: 170px;
+  transform: rotate(20deg);
+}
+
+.events-heading {
+  text-align: center;
+  margin-bottom: 42px;
+}
+
+.events-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #a77c52;
+  font-family: Montserrat, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+.events-heading h2 {
+  margin: 12px 0 7px;
+  color: #563b35;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(43px, 6vw, 64px);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.events-heading h2 span {
+  color: #b77b70;
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+}
+
+.events-heading > p {
+  margin: 12px auto;
+  color: #90766b;
+  font-family: Montserrat, sans-serif;
+  font-size: 11px;
+  line-height: 1.8;
+  letter-spacing: .35px;
+}
+
+.events-heading-divider,
+.event-details-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #c19a68;
+}
+
+.events-heading-divider {
+  margin-top: 20px;
+}
+
+.events-heading-divider span,
+.event-details-divider span {
+  width: 42px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c8a477);
+}
+
+.events-heading-divider span:last-child,
+.event-details-divider span:last-child {
+  transform: rotate(180deg);
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 25px;
+  align-items: start;
+}
+
+.event-invitation-card {
+  --event-accent: #bc9870;
+  --event-soft: #f6e6d0;
+  position: relative;
+  padding: 7px;
+  border: 1px solid rgba(184, 146, 105, .48);
+  border-radius: 190px 190px 12px 12px;
+  background: rgba(255, 252, 246, .88);
+  box-shadow:
+    0 14px 35px rgba(99, 64, 46, .09),
+    inset 0 0 0 3px rgba(255, 255, 255, .8);
+  transition: transform .45s ease, box-shadow .45s ease;
+}
+
+.event-invitation-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 22px 45px rgba(99, 64, 46, .14);
+}
+
+.event-card-inner {
+  overflow: hidden;
+  border: 1px solid rgba(190, 157, 119, .35);
+  border-radius: 184px 184px 8px 8px;
+  background: #fffaf3;
+}
+
+.event-haldi {
+  --event-accent: #c99535;
+  --event-soft: #fff0c5;
+}
+
+.event-mehndi {
+  --event-accent: #73845a;
+  --event-soft: #e8edda;
+}
+
+.event-sangeet {
+  --event-accent: #9471a3;
+  --event-soft: #eee2f2;
+}
+
+.event-cocktail {
+  --event-accent: #bd788d;
+  --event-soft: #f7e2e9;
+}
+
+.event-wedding {
+  --event-accent: #a74f51;
+  --event-soft: #f4dddd;
+}
+
+.event-artwork {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: var(--event-soft);
+  isolation: isolate;
+}
+
+.event-gif {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform .8s ease;
+}
+
+.event-invitation-card:hover .event-gif {
+  transform: scale(1.045);
+}
+
+.event-artwork-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(34, 20, 14, .17),
+    transparent 23%,
+    transparent 68%,
+    rgba(34, 20, 14, .28)
+  );
+}
+
+.event-number {
+  position: absolute;
+  top: 17px;
+  left: 17px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, .75);
+  border-radius: 50%;
+  color: white;
+  background: rgba(70, 45, 35, .25);
+  backdrop-filter: blur(7px);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 13px;
+}
+
+.event-artwork-tag {
+  position: absolute;
+  z-index: 2;
+  top: 22px;
+  right: 12px;
+  max-width: 65%;
+  color: #fffaf0;
+  font-family: Montserrat, sans-serif;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-align: right;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, .35);
+}
+
+.event-artwork-bottom {
+  position: absolute;
+  z-index: 2;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #fff4d7;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, .4);
+}
+
+.event-mini-flower {
+  font-size: 13px;
+  animation: event-flower-float 3s ease-in-out infinite;
+}
+
+.event-mini-line {
+  width: 45px;
+  height: 1px;
+  background: rgba(255, 244, 215, .8);
+}
+
+.event-card-content {
+  padding: 19px 14px 15px;
+  text-align: center;
+}
+
+.event-small-label {
+  color: var(--event-accent);
+  font-family: Montserrat, sans-serif;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.event-card-content h3 {
+  margin: 6px 0 3px;
+  color: #5c3e38;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(21px, 2.4vw, 27px);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.event-subtitle {
+  min-height: 29px;
+  margin: 5px 0 13px;
+  color: #977e72;
+  font-family: Montserrat, sans-serif;
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.event-details-divider {
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.event-details-divider span {
+  width: 30px;
+  background: var(--event-accent);
+  opacity: .5;
+}
+
+.event-details-divider svg {
+  color: var(--event-accent);
+}
+
+.event-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 9px 0;
+  color: #806c61;
+  font-family: Montserrat, sans-serif;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.event-detail-row svg {
+  flex: 0 0 auto;
+  color: var(--event-accent);
+  stroke-width: 1.6;
+}
+
+.event-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 15px;
+  padding-top: 11px;
+  border-top: 1px solid rgba(184, 146, 105, .25);
+  color: #ad8a69;
+  font-family: Montserrat, sans-serif;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.event-card-footer svg {
+  color: #b77b70;
+  fill: rgba(183, 123, 112, .13);
+}
+
+.events-footer-note {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  margin-top: 38px;
+  color: #9d7968;
+  font-family: "Great Vibes", cursive;
+  font-size: 26px;
+}
+
+.events-footer-note span {
+  color: #c19a68;
+  font-family: serif;
+  font-size: 17px;
+}
+
+@keyframes event-flower-float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-4px) rotate(12deg); }
+}
+
+/* Tablet */
+@media (max-width: 850px) {
+  .wedding-events-section {
+    padding: 62px 18px 50px;
+  }
+
+  .events-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 620px;
+    margin: 0 auto;
+    gap: 20px;
+  }
+
+  .event-invitation-card:last-child {
+    grid-column: 1 / -1;
+    width: calc(50% - 10px);
+    justify-self: center;
+  }
+}
+
+/* Mobile-first portrait invitation layout */
+@media (max-width: 560px) {
+  .wedding-events-section {
+    padding: 48px 15px 40px;
+  }
+
+  .events-heading {
+    margin-bottom: 27px;
+  }
+
+  .events-eyebrow {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .events-heading h2 {
+    font-size: 47px;
+  }
+
+  .events-heading > p {
+    max-width: 270px;
+    font-size: 10px;
+  }
+
+  .events-grid {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    max-width: 340px;
+    gap: 22px;
+  }
+
+  .event-invitation-card,
+  .event-invitation-card:last-child {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .event-invitation-card {
+    padding: 6px;
+    border-radius: 165px 165px 11px 11px;
+  }
+
+  .event-card-inner {
+    border-radius: 159px 159px 7px 7px;
+  }
+
+  .event-artwork {
+    aspect-ratio: 4 / 4.5;
+  }
+
+  .event-number {
+    top: 14px;
+    left: 14px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .event-card-content {
+    padding: 16px 12px 14px;
+  }
+
+  .event-card-content h3 {
+    font-size: 27px;
+  }
+
+  .event-subtitle {
+    font-size: 9px;
+    min-height: auto;
+    margin-bottom: 11px;
+  }
+
+  .event-detail-row {
+    font-size: 9px;
+    margin: 8px 0;
+  }
+
+  .event-card-footer {
+    margin-top: 13px;
+  }
+
+  .events-footer-note {
+    margin-top: 28px;
+    font-size: 23px;
+  }
+
+  .events-flower-one {
+    font-size: 90px;
+  }
+
+  .events-flower-two {
+    font-size: 100px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-mini-flower {
+    animation: none;
+  }
+
+  .event-invitation-card,
+  .event-gif {
+    transition: none;
+  }
+}

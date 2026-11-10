@@ -1,0 +1,138 @@
+
+.wedding-music-player {
+  position: fixed;
+  right: 22px;
+  bottom: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.music-main-button,
+.music-volume-toggle {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fffaf2;
+  background: linear-gradient(145deg, #914653, #592832);
+  box-shadow: 0 5px 22px rgba(84, 39, 45, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.music-main-button svg,
+.music-volume-toggle svg {
+  width: 19px;
+  height: 19px;
+  position: relative;
+  z-index: 2;
+}
+
+.music-main-button:hover,
+.music-volume-toggle:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(84, 39, 45, 0.35);
+}
+
+.music-volume-toggle {
+  width: 39px;
+  height: 39px;
+  background: #fff8f1;
+  color: #792f3b;
+  border-color: #d8bd9b;
+}
+
+.music-volume-toggle svg {
+  width: 17px;
+  height: 17px;
+}
+
+.music-main-button.is-playing > svg {
+  animation: musicIconPulse 2s ease-in-out infinite;
+}
+
+.music-ripple {
+  position: absolute;
+  inset: -5px;
+  border: 1px solid rgba(184, 141, 85, 0.75);
+  border-radius: 50%;
+  animation: musicRipple 2s ease-out infinite;
+}
+
+.music-volume-panel {
+  position: absolute;
+  bottom: 58px;
+  right: 0;
+  width: 155px;
+  padding: 12px;
+  border: 1px solid #e8d5c3;
+  border-radius: 14px;
+  background: #fffaf5;
+  box-shadow: 0 8px 28px rgba(84, 39, 45, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.music-volume-panel button {
+  border: 0;
+  background: transparent;
+  color: #792f3b;
+  cursor: pointer;
+}
+
+.music-volume-panel button svg {
+  width: 18px;
+}
+
+.music-volume-panel input {
+  width: 100%;
+  accent-color: #792f3b;
+  cursor: pointer;
+}
+
+@keyframes musicRipple {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes musicIconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+@media (max-width: 600px) {
+  .wedding-music-player {
+    right: 14px;
+    bottom: 18px;
+  }
+
+  .music-main-button {
+    width: 45px;
+    height: 45px;
+  }
+
+  .music-volume-toggle {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-ripple,
+  .music-main-button.is-playing > svg {
+    animation: none;
+  }
+}

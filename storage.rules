@@ -1,0 +1,10 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Initial safe default. Add narrowly scoped image upload/read rules
+    // after the invitation and admin data model is defined.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

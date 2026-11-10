@@ -1,0 +1,391 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap');
+
+.wedding-hero-full {
+  --hero-wine: #792f3b;
+  --hero-ink: #54272d;
+  --hero-gold: #b88d55;
+
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 20%, #fff8f1 0%, #f4e0d7 58%, #e8cbbb 100%);
+}
+
+.wedding-hero-full *,
+.wedding-hero-full *::before,
+.wedding-hero-full *::after {
+  box-sizing: border-box;
+}
+
+.hero-full-image {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* Soft warm colour treatment that ties the hero to the invitation sections */
+.hero-image-wash {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(84,39,45,.08) 0%,
+      rgba(84,39,45,0) 22%,
+      rgba(249,233,223,0) 68%,
+      rgba(84,39,45,.13) 100%
+    ),
+    radial-gradient(
+      ellipse at 50% 48%,
+      transparent 48%,
+      rgba(84,39,45,.12) 100%
+    );
+}
+
+.hero-vignette {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 90px rgba(84,39,45,.13),
+    inset 0 0 0 1px rgba(255,248,241,.25);
+}
+
+.hero-inner-frame {
+  position: absolute;
+  z-index: 1;
+  inset: 17px;
+  border: 1px solid rgba(255,238,215,.48);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.hero-inner-frame::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(184,141,85,.35);
+}
+
+.hero-frame-corner {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: rgba(255,239,216,.9);
+  border-style: solid;
+  filter: drop-shadow(0 1px 4px rgba(84,39,45,.22));
+}
+
+.hero-frame-top-left {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+.hero-frame-top-right {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+.hero-frame-bottom-left {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+.hero-frame-bottom-right {
+  right: -1px;
+  bottom: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+/* Floating floral accents */
+.hero-petal-overlay {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-petal {
+  position: absolute;
+  display: block;
+  color: rgba(255,232,211,.84);
+  text-shadow:
+    0 2px 12px rgba(84,39,45,.22),
+    0 0 18px rgba(255,246,226,.4);
+  animation: heroPetalFloat 8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.hero-petal-one {
+  top: 22%;
+  left: 6%;
+  font-size: 22px;
+}
+.hero-petal-two {
+  top: 39%;
+  right: 6%;
+  font-size: 27px;
+  animation-delay: 1.2s;
+}
+.hero-petal-three {
+  top: 57%;
+  left: 10%;
+  font-size: 18px;
+  animation-delay: 2.1s;
+}
+.hero-petal-four {
+  right: 9%;
+  bottom: 22%;
+  font-size: 24px;
+  animation-delay: 3s;
+}
+.hero-petal-five {
+  top: 13%;
+  right: 18%;
+  font-size: 16px;
+  animation-delay: 1.8s;
+}
+.hero-petal-six {
+  bottom: 14%;
+  left: 24%;
+  font-size: 15px;
+  animation-delay: 3.8s;
+}
+
+.hero-bottom-glow {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 16%;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(84,39,45,.09));
+}
+
+@keyframes heroPetalFloat {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: .58;
+  }
+  50% {
+    transform: translate3d(0, -15px, 0) rotate(13deg);
+    opacity: 1;
+  }
+}
+
+/* Tablet */
+@media (max-width: 760px) {
+  .wedding-hero-full {
+    min-height: 540px;
+  }
+
+  .hero-full-image {
+    object-position: center center;
+  }
+
+  .hero-inner-frame {
+    inset: 12px;
+  }
+
+  .hero-frame-corner {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .wedding-hero-full {
+    height: 100svh;
+    min-height: 520px;
+  }
+
+  .hero-full-image {
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .hero-image-wash {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(84,39,45,.06),
+        transparent 24%,
+        transparent 72%,
+        rgba(84,39,45,.15)
+      ),
+      radial-gradient(
+        ellipse at center,
+        transparent 48%,
+        rgba(84,39,45,.13) 100%
+      );
+  }
+
+  .hero-inner-frame {
+    inset: 9px;
+  }
+
+  .hero-inner-frame::before {
+    inset: 4px;
+  }
+
+  .hero-frame-corner {
+    width: 17px;
+    height: 17px;
+  }
+
+  .hero-petal-one { left: 3%; top: 25%; font-size: 18px; }
+  .hero-petal-two { right: 3%; top: 42%; font-size: 22px; }
+  .hero-petal-three { left: 5%; bottom: 24%; font-size: 16px; }
+  .hero-petal-four { right: 5%; bottom: 18%; font-size: 19px; }
+  .hero-petal-five { right: 14%; top: 15%; font-size: 14px; }
+  .hero-petal-six { left: 18%; bottom: 12%; font-size: 13px; }
+}
+
+/* Short screens */
+@media (max-height: 620px) and (min-width: 601px) {
+  .wedding-hero-full {
+    min-height: 480px;
+  }
+  .hero-inner-frame {
+    inset: 10px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .hero-petal {
+    animation: none !important;
+  }
+}
+
+/* ==========================================
+   CENTRED SCROLL TO EXPLORE BUTTON
+========================================== */
+
+.hero-scroll-indicator {
+  position: absolute;
+  z-index: 30;
+
+  /* True horizontal centring */
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+
+  bottom: 85px;
+
+  width: max-content;
+  min-width: 220px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+
+  padding: 13px 19px;
+
+  border: 1px solid rgba(255, 231, 193, 0.95);
+  border-radius: 50px;
+
+  color: #fff9ef;
+
+  background: linear-gradient(
+    135deg,
+    #914653,
+    #54272d
+  );
+
+  box-shadow:
+    0 7px 24px rgba(50, 20, 25, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(10px);
+
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.hero-scroll-text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.hero-scroll-arrow {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #792f3b;
+  background: #f7dfbd;
+  border-radius: 50%;
+
+  animation: heroScrollDown 1.5s ease-in-out infinite;
+}
+
+.hero-scroll-indicator:hover {
+  box-shadow: 0 10px 30px rgba(50, 20, 25, 0.45);
+}
+
+.hero-scroll-indicator:active {
+  scale: 0.96;
+}
+
+@keyframes heroScrollDown {
+  0%, 100% {
+    transform: translateY(-2px);
+  }
+
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-scroll-indicator {
+    bottom: 85px;
+    min-width: 215px;
+    padding: 12px 17px;
+  }
+
+  .hero-scroll-text {
+    font-size: 9px;
+    letter-spacing: 1.8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-arrow {
+    animation: none;
+  }
+}
