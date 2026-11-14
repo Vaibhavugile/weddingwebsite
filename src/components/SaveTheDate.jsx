@@ -10,13 +10,13 @@ import "./SaveTheDate.css";
 const COUPLE_GIF = "/assets/animated-indian-wedding-couple.gif";
 
 const WEDDING = {
-  bride: "Divya",
-  groom: "Shreyash",
+  bride: "Shreyash",
+  groom: "Divya",
   day: "10",
   month: "DECEMBER",
   year: "2026",
-  location: "Nagaur, Rajasthan",
-  venue: "Wedding venue to be announced",
+  location: "",
+  venue: "",
 };
 
 function ScratchCard() {

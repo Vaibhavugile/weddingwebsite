@@ -12,66 +12,56 @@ import {
 import "./WeddingCelebrations.css";
 
 const celebrations = [
+
   {
-    id: "mehndi",
+    id: "haldi",
     number: "01",
-    title: "Mehndi Ceremony",
-    subtitle: "Love painted in beautiful patterns",
-    date: "Date to be announced",
-    time: "Time to be announced",
-    venue: "Venue to be announced",
-    image: "/assets/mehndi-celebration.gif",
-    theme: "mehndi",
-    tag: "THE ART OF LOVE",
-  },,
+    title: "Haldi Celebration",
+    subtitle: "A little sunshine, a lot of love",
+    date: "09-12-2026",
+    time: "12:00 PM",
+    venue: "Fun Planet Resort,Nagpur",
+    image: "/assets/haldi-celebration.gif",
+    theme: "haldi",
+    tag: "THE TURMERIC CEREMONY",
+  },
   {
     id: "sangeet",
     number: "02",
     title: "Sangeet Night",
     subtitle: "An evening filled with music and magic",
-    date: "Date to be announced",
-    time: "Time to be announced",
-    venue: "Venue to be announced",
+    date: "09-12-2026",
+    time: "7:00 PM",
+    venue: "Fun Planet Resort,Nagpur",
     image: "/assets/sangeet-celebration.gif",
     theme: "sangeet",
     tag: "A NIGHT OF MUSIC",
-  },,
-  {
-    id: "haldi",
-    number: "03",
-    title: "Haldi Celebration",
-    subtitle: "A little sunshine, a lot of love",
-    date: "Date to be announced",
-    time: "Time to be announced",
-    venue: "Venue to be announced",
-    image: "/assets/haldi-celebration.gif",
-    theme: "haldi",
-    tag: "THE TURMERIC CEREMONY",
-  },,
+  },
+  
   {
     id: "wedding",
-    number: "04",
+    number: "03",
     title: "The Wedding",
     subtitle: "Two hearts, one beautiful forever",
-    date: "10 December 2026",
-    time: "Time to be announced",
-    venue: "Nagaur, Rajasthan",
+    date: "10-12-2026",
+    time: "4:30 PM",
+    venue: "Fun Planet Resort,Nagpur",
     image: "/assets/wedding-ceremony.gif",
     theme: "wedding",
     tag: "THE WEDDING CELEBRATION",
-  },,
-  {
-    id: "cocktail",
-    number: "05",
-    title: "Cocktail Party",
-    subtitle: "Let's celebrate in style",
-    date: "Date to be announced",
-    time: "Time to be announced",
-    venue: "Venue to be announced",
-    image: "/assets/cocktail-celebration.gif",
-    theme: "cocktail",
-    tag: "THE GRAND PARTY",
   },
+//   {
+//     id: "cocktail",
+//     number: "05",
+//     title: "Cocktail Party",
+//     subtitle: "Let's celebrate in style",
+//     date: "Date to be announced",
+//     time: "Time to be announced",
+//     venue: "Venue to be announced",
+//     image: "/assets/cocktail-celebration.gif",
+//     theme: "cocktail",
+//     tag: "THE GRAND PARTY",
+//   },
 ];
 
 const WeddingCelebrations = () => {
@@ -99,7 +89,7 @@ const WeddingCelebrations = () => {
           </h2>
 
           <p>
-            Five beautiful occasions, countless memories,
+            Three beautiful occasions, countless memories,
             and a lifetime of love.
           </p>
 
@@ -179,7 +169,7 @@ const WeddingCelebrations = () => {
                   </div>
 
                   <div className="event-card-footer">
-                    <span>SHREYASH & DIVYA</span>
+                    <span>DIVYA & SHREYASH</span>
                     <Heart size={13} />
                     <span>WITH LOVE</span>
                   </div>

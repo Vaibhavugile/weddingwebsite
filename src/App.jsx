@@ -23,39 +23,15 @@ function WeddingHome() {
       <div className="ambient ambient-two" />
 
       <HeroSection />
-      <OurStory />
+      {/* <OurStory /> */}
       <SaveTheDate />
       <WeddingCelebrations />
-      <RSVPSection />
+      {/* <RSVPSection /> */}
       <WeddingVenue />
-      <OurMoments />
+      {/* <OurMoments /> */}
       <ThankYouSection />
 
-      <footer className="footer">
-        <span>AN INVITATION TO CELEBRATE LOVE</span>
-
-        <span className="firebase-status">
-          <i
-            className={
-              firebaseReady
-                ? "status-dot ready"
-                : "status-dot"
-            }
-          />
-
-          {firebaseReady
-            ? "FIREBASE CONNECTED"
-            : "FIREBASE SETUP PENDING"}
-        </span>
-
-        <span className="footer-couple">
-          SHREYASH <span>♥</span> DIVYA
-        </span>
-
-        <span className="footer-year">
-          10 · 12 · 2026
-        </span>
-      </footer>
+     
     </main>
   );
 }

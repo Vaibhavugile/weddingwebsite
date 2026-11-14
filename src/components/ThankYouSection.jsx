@@ -107,7 +107,7 @@ export default function ThankYouSection() {
           transition={{ duration: 0.8, delay: 0.55 }}
         >
           <span>WITH LOVE,</span>
-          <h3>Shreyash <i>&</i> Divya</h3>
+          <h3>DIVYA <i>&</i> SHREYASH</h3>
           <div className="thankyou-date">10 · 12 · 2026</div>
         </motion.div>
 

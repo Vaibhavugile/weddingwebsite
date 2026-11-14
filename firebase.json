@@ -8,6 +8,23 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/divya-shreyash-wedding-invite",
+        "type": 301
+      },
+      {
+        "source": "/divya",
+        "destination": "/divya-shreyash-wedding-invite",
+        "type": 301
+      },
+      {
+        "source": "/shreyash",
+        "destination": "/divya-shreyash-wedding-invite",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "**",

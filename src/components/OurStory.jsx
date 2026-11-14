@@ -44,7 +44,7 @@ function PhotoFrame({ src, number, title }) {
       {!imageFailed ? (
         <img
           src={src}
-          alt={`Shreyash and Divya — ${title}`}
+          alt={`and Divya — ${title}`}
           loading="lazy"
           onError={() => setImageFailed(true)}
         />

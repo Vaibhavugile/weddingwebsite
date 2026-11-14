@@ -350,7 +350,7 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
 
             <div className="poster-top-mark">
               <Heart size={13} fill="currentColor" />
-              <span>SHREYASH &amp; DIVYA</span>
+              <span>DIVYA &amp; SHREYASH</span>
             </div>
 
             {/* This single card click starts BOTH music and video */}
@@ -368,7 +368,7 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
                 <strong>Tap to Open Invitation</strong>
 
                 <small>
-                  THE CELEBRATION BEGINS HERE
+                  Divya & Shreyash
                 </small>
               </span>
 
@@ -380,11 +380,7 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
               </span>
             </button>
 
-            <div className="poster-date">
-              <span />
-              10 · 12 · 2026
-              <span />
-            </div>
+            
           </motion.section>
         )}
       </AnimatePresence>
