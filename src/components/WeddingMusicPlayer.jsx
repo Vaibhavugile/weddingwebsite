@@ -4,13 +4,19 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
-  useEffect
+  useEffect,
 } from "react";
 import { motion } from "framer-motion";
-import { Music2, Pause, Play, Volume2, VolumeX } from "lucide-react";
+import {
+  Music2,
+  Pause,
+  Play,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import "./WeddingMusicPlayer.css";
 
-const WeddingMusicPlayer = forwardRef((props, ref) => {
+const WeddingMusicPlayer = forwardRef(({ musicSrc }, ref) => {
   const audioRef = useRef(null);
 
   const [playing, setPlaying] = useState(false);
@@ -19,17 +25,34 @@ const WeddingMusicPlayer = forwardRef((props, ref) => {
   const [showVolume, setShowVolume] = useState(false);
 
   useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.pause();
+    audio.currentTime = 0;
+    audio.load();
+    setPlaying(false);
+  }, [musicSrc]);
+
+  useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
   }, [volume]);
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = muted;
+    }
+  }, [muted]);
+
   useImperativeHandle(ref, () => ({
     play: async () => {
-      if (!audioRef.current) return;
+      const audio = audioRef.current;
+      if (!audio || !musicSrc) return;
 
       try {
-        await audioRef.current.play();
+        await audio.play();
         setPlaying(true);
       } catch (error) {
         console.warn("Music playback could not start:", error);
@@ -40,39 +63,43 @@ const WeddingMusicPlayer = forwardRef((props, ref) => {
     pause: () => {
       audioRef.current?.pause();
       setPlaying(false);
-    }
-  }));
+    },
+  }), [musicSrc]);
 
   const togglePlayback = async () => {
-    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (!audio || !musicSrc) return;
 
-    if (playing) {
-      audioRef.current.pause();
+    if (!audio.paused) {
+      audio.pause();
       setPlaying(false);
-    } else {
-      try {
-        await audioRef.current.play();
-        setPlaying(true);
-      } catch (error) {
-        console.warn("Music playback failed:", error);
-      }
+      return;
+    }
+
+    try {
+      await audio.play();
+      setPlaying(true);
+    } catch (error) {
+      console.warn("Music playback failed:", error);
+      setPlaying(false);
     }
   };
 
   const toggleMute = () => {
-    const nextMuted = !muted;
-    setMuted(nextMuted);
+    setMuted((previous) => !previous);
+  };
 
-    if (audioRef.current) {
-      audioRef.current.muted = nextMuted;
-    }
+  const handleVolumeChange = (event) => {
+    const value = Number(event.target.value);
+    setVolume(value);
+    setMuted(value === 0);
   };
 
   return (
     <>
       <audio
         ref={audioRef}
-        src="/assets/wedding-romantic-song.mp3"
+        src={musicSrc || undefined}
         loop
         preload="none"
         onPlay={() => setPlaying(true)}
@@ -103,14 +130,7 @@ const WeddingMusicPlayer = forwardRef((props, ref) => {
                 max="1"
                 step="0.05"
                 value={muted ? 0 : volume}
-                onChange={(e) => {
-                  const value = Number(e.target.value);
-                  setVolume(value);
-                  setMuted(value === 0);
-                  if (audioRef.current) {
-                    audioRef.current.muted = value === 0;
-                  }
-                }}
+                onChange={handleVolumeChange}
                 aria-label="Music volume"
               />
             </div>
@@ -119,7 +139,7 @@ const WeddingMusicPlayer = forwardRef((props, ref) => {
 
         <button
           className="music-volume-toggle"
-          onClick={() => setShowVolume(!showVolume)}
+          onClick={() => setShowVolume((previous) => !previous)}
           aria-label="Volume settings"
           type="button"
         >
@@ -131,11 +151,9 @@ const WeddingMusicPlayer = forwardRef((props, ref) => {
           onClick={togglePlayback}
           aria-label={playing ? "Pause music" : "Play music"}
           type="button"
+          disabled={!musicSrc}
         >
-          {playing && (
-            <span className="music-ripple" />
-          )}
-
+          {playing && <span className="music-ripple" />}
           {playing ? <Pause /> : <Play />}
         </button>
       </motion.div>

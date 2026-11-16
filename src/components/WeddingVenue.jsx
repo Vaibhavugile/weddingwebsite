@@ -1,6 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+
 import {
   MapPin,
   Navigation2,
@@ -12,20 +13,90 @@ import {
 
 import "./WeddingVenue.css";
 
-const VENUE_GIF = "/assets/wedding-venue.gif";
+export default function WeddingVenue({ invitation }) {
+  const bride = invitation?.bride || "Bride";
+  const groom = invitation?.groom || "Groom";
 
-const MAP_URL =
-  "https://www.google.com/maps/place/21%C2%B020'17.9%22N+79%C2%B000'17.4%22E/@21.338317,79.0022467,17z/data=!3m1!4b1!4m4!3m3!8m2!3d21.338317!4d79.0048216?entry=ttu&g_ep=EgoyMDI2MTEwNC4wIKXMDSoASAFQAw%3D%3D";
+  const venue = invitation?.venue || {};
+  const date = invitation?.date || {};
+  const assets = invitation?.assets || {};
 
-export default function WeddingVenue() {
+  const venueName = venue.name || "Wedding Venue";
+  const venueAddress = venue.address || "Venue details coming soon";
+
+  const venueGif =
+    assets.venue || "/assets/wedding-venue.gif";
+
+  const mapUrl = venue.mapUrl || "";
+
+  const numericDate =
+    date.numeric ||
+    [date.day, date.month, date.year]
+      .filter(Boolean)
+      .join(" · ");
+
+  const displayDate = date.display || numericDate || "Date to be announced";
+
+  // Calculate weekday from the invitation date.
+  const getFormattedDate = () => {
+    if (!date.day || !date.year || !date.month) {
+      return displayDate;
+    }
+
+    const monthMap = {
+      JANUARY: 0,
+      FEBRUARY: 1,
+      MARCH: 2,
+      APRIL: 3,
+      MAY: 4,
+      JUNE: 5,
+      JULY: 6,
+      AUGUST: 7,
+      SEPTEMBER: 8,
+      OCTOBER: 9,
+      NOVEMBER: 10,
+      DECEMBER: 11,
+    };
+
+    const monthIndex =
+      monthMap[String(date.month).toUpperCase()];
+
+    if (monthIndex === undefined) {
+      return displayDate;
+    }
+
+    const weddingDate = new Date(
+      Number(date.year),
+      monthIndex,
+      Number(date.day)
+    );
+
+    if (Number.isNaN(weddingDate.getTime())) {
+      return displayDate;
+    }
+
+    const weekday = weddingDate.toLocaleDateString(
+      "en-IN",
+      { weekday: "long" }
+    );
+
+    return `${weekday}, ${displayDate}`;
+  };
+
   return (
-    <section className="wedding-venue-section" id="venue">
-      <div className="venue-flower venue-flower-one">❀</div>
-      <div className="venue-flower venue-flower-two">✿</div>
+    <section
+      className="wedding-venue-section"
+      id="venue"
+    >
+      <div className="venue-flower venue-flower-one">
+        ❀
+      </div>
+
+      <div className="venue-flower venue-flower-two">
+        ✿
+      </div>
 
       <div className="venue-container">
-
-        {/* Section Heading */}
         <motion.header
           className="venue-heading"
           initial={{ opacity: 0, y: 25 }}
@@ -55,7 +126,6 @@ export default function WeddingVenue() {
           </div>
         </motion.header>
 
-        {/* Venue Invitation Card */}
         <motion.div
           className="venue-card"
           initial={{ opacity: 0, y: 35 }}
@@ -63,12 +133,10 @@ export default function WeddingVenue() {
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.8 }}
         >
-
-          {/* Animated Venue Artwork */}
           <div className="venue-artwork">
             <img
-              src={VENUE_GIF}
-              alt="Shreyash and Divya at Fun Planet Resort wedding venue"
+              src={venueGif}
+              alt={`${bride} and ${groom} wedding venue`}
               loading="lazy"
               className="venue-gif"
             />
@@ -78,9 +146,11 @@ export default function WeddingVenue() {
             <div className="venue-artwork-caption">
               <span>THE BEGINNING OF FOREVER</span>
 
-              <strong>Shreyash & Divya</strong>
+              <strong>
+                {bride} & {groom}
+              </strong>
 
-              <small>10 · 12 · 2026</small>
+              <small>{numericDate}</small>
             </div>
 
             <div className="venue-artwork-heart">
@@ -88,16 +158,14 @@ export default function WeddingVenue() {
             </div>
           </div>
 
-          {/* Venue Details */}
           <div className="venue-information">
-
             <span className="venue-small-label">
               THE WEDDING CELEBRATION
             </span>
 
             <h3>Join us at</h3>
 
-            <h4>Fun Planet Resort</h4>
+            <h4>{venueName}</h4>
 
             <div className="venue-location-divider">
               <span />
@@ -105,7 +173,6 @@ export default function WeddingVenue() {
               <span />
             </div>
 
-            {/* Resort Address */}
             <div className="venue-place-card">
               <div className="venue-place-icon">
                 <Landmark size={20} />
@@ -114,49 +181,43 @@ export default function WeddingVenue() {
               <div className="venue-place-text">
                 <span>WEDDING VENUE</span>
 
-                <strong>Fun Planet Resort</strong>
+                <strong>{venueName}</strong>
 
-                <small>
-                  Patansaongi, Nagpur, Maharashtra
-                </small>
+                <small>{venueAddress}</small>
               </div>
             </div>
 
-            {/* Wedding Date */}
             <div className="venue-date-card">
               <CalendarDays size={17} />
 
               <div>
                 <span>WEDDING DATE</span>
 
-                <strong>
-                  Thursday, 10 December 2026
-                </strong>
+                <strong>{getFormattedDate()}</strong>
               </div>
             </div>
 
-            {/* Google Maps Directions */}
-            <motion.a
-              href={MAP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="venue-directions-button"
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              <Navigation2 size={16} />
-              GET DIRECTIONS TO VENUE
-            </motion.a>
+            {mapUrl && (
+              <motion.a
+                href={mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="venue-directions-button"
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Navigation2 size={16} />
+                GET DIRECTIONS TO VENUE
+              </motion.a>
+            )}
 
             <p className="venue-note">
               We look forward to welcoming you
               to our special celebration.
             </p>
-
           </div>
         </motion.div>
 
-        {/* Bottom Message */}
         <motion.div
           className="venue-bottom-note"
           initial={{ opacity: 0 }}
@@ -169,7 +230,6 @@ export default function WeddingVenue() {
 
           <span>✧</span>
         </motion.div>
-
       </div>
     </section>
   );

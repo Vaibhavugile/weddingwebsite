@@ -4,11 +4,13 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import "./HeroSection.css";
 
-const HERO_IMAGE = "/assets/wedding-hero.png";
-
-export default function HeroSection() {
+export default function HeroSection({ invitation }) {
   const reduceMotion = useReducedMotion();
   const [showScroll, setShowScroll] = useState(false);
+
+  const bride = invitation?.bride || "Bride";
+  const groom = invitation?.groom || "Groom";
+  const heroImage = invitation?.assets?.hero || invitation?.assets?.poster;
 
   useEffect(() => {
     if (reduceMotion) {
@@ -16,18 +18,14 @@ export default function HeroSection() {
       return;
     }
 
-    const timer = setTimeout(() => {
-      setShowScroll(true);
-    }, 2000);
+    const timer = setTimeout(() => setShowScroll(true), 2000);
 
     return () => clearTimeout(timer);
   }, [reduceMotion]);
 
   const handleScroll = () => {
-    const scrollAmount = window.innerHeight * 0.05;
-
     window.scrollBy({
-      top: scrollAmount,
+      top: window.innerHeight * 0.05,
       behavior: reduceMotion ? "instant" : "smooth",
     });
   };
@@ -36,11 +34,11 @@ export default function HeroSection() {
     <section
       className="wedding-hero-full"
       id="home"
-      aria-label="Shreyash and Divya wedding invitation"
+      aria-label={`${bride} and ${groom} wedding invitation`}
     >
       <motion.img
-        src={HERO_IMAGE}
-        alt="Shreyash and Divya wedding invitation"
+        src={heroImage}
+        alt={`${bride} and ${groom} wedding invitation`}
         className="hero-full-image"
         initial={reduceMotion ? false : { opacity: 0, scale: 1.045 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -74,31 +72,28 @@ export default function HeroSection() {
 
       <div className="hero-bottom-glow" aria-hidden="true" />
 
-      {/* Scroll indicator appears after 2 seconds */}
       {showScroll && (
- 
-<motion.button
-  type="button"
-  className="hero-scroll-indicator"
-  onClick={handleScroll}
-  initial={{ opacity: 0, y: 15 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{
-    duration: 0.8,
-    ease: [0.22, 1, 0.36, 1],
-  }}
-  aria-label="Scroll down to explore"
->
-  <span className="hero-scroll-text">
-    SCROLL TO EXPLORE
-  </span>
+        <motion.button
+          type="button"
+          className="hero-scroll-indicator"
+          onClick={handleScroll}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.8,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          aria-label="Scroll down to explore"
+        >
+          <span className="hero-scroll-text">
+            SCROLL TO EXPLORE
+          </span>
 
-  <span className="hero-scroll-arrow">
-    <ChevronDown size={19} strokeWidth={2} />
-  </span>
-</motion.button>
-
-)}
+          <span className="hero-scroll-arrow">
+            <ChevronDown size={19} strokeWidth={2} />
+          </span>
+        </motion.button>
+      )}
     </section>
   );
 }

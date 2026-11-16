@@ -5,21 +5,10 @@ import React, {
   useRef,
   useState,
 } from "react";
+
 import "./SaveTheDate.css";
 
-const COUPLE_GIF = "/assets/animated-indian-wedding-couple.gif";
-
-const WEDDING = {
-  bride: "Shreyash",
-  groom: "Divya",
-  day: "10",
-  month: "DECEMBER",
-  year: "2026",
-  location: "",
-  venue: "",
-};
-
-function ScratchCard() {
+function ScratchCard({ invitation }) {
   const canvasRef = useRef(null);
   const cardRef = useRef(null);
   const drawingRef = useRef(false);
@@ -28,6 +17,25 @@ function ScratchCard() {
   const [revealed, setRevealed] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  // Dynamic wedding information
+  const bride = invitation?.bride || "Bride";
+  const groom = invitation?.groom || "Groom";
+
+  const weddingDate = invitation?.date || {};
+
+  const day = weddingDate.day || "";
+  const month = weddingDate.month || "";
+  const year = weddingDate.year || "";
+
+  const numericDate =
+    weddingDate.numeric ||
+    [day, month, year].filter(Boolean).join(" · ");
+
+  const venue = invitation?.venue || {};
+
+  const venueName = venue.name || "Wedding Venue";
+  const venueAddress = venue.address || "";
+
   const paintCover = useCallback(() => {
     const canvas = canvasRef.current;
     const card = cardRef.current;
@@ -35,12 +43,14 @@ function ScratchCard() {
     if (!canvas || !card || revealed) return;
 
     const rect = card.getBoundingClientRect();
+
     if (!rect.width || !rect.height) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     canvas.width = Math.round(rect.width * dpr);
     canvas.height = Math.round(rect.height * dpr);
+
     canvas.style.width = `${rect.width}px`;
     canvas.style.height = `${rect.height}px`;
 
@@ -51,7 +61,10 @@ function ScratchCard() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const gradient = ctx.createLinearGradient(
-      0, 0, rect.width, rect.height
+      0,
+      0,
+      rect.width,
+      rect.height
     );
 
     gradient.addColorStop(0, "#fff0d1");
@@ -80,10 +93,20 @@ function ScratchCard() {
     // Embossed inner frame
     ctx.strokeStyle = "rgba(255,250,229,.9)";
     ctx.lineWidth = 1;
-    ctx.strokeRect(8, 8, rect.width - 16, rect.height - 16);
+    ctx.strokeRect(
+      8,
+      8,
+      rect.width - 16,
+      rect.height - 16
+    );
 
     ctx.strokeStyle = "rgba(125,78,37,.3)";
-    ctx.strokeRect(12, 12, rect.width - 24, rect.height - 24);
+    ctx.strokeRect(
+      12,
+      12,
+      rect.width - 24,
+      rect.height - 24
+    );
 
     // Scratch instructions
     ctx.textAlign = "center";
@@ -91,6 +114,7 @@ function ScratchCard() {
 
     ctx.fillStyle = "#71333a";
     ctx.font = "600 10px Arial, sans-serif";
+
     ctx.fillText(
       "A LITTLE SURPRISE",
       rect.width / 2,
@@ -98,6 +122,7 @@ function ScratchCard() {
     );
 
     ctx.font = "italic 23px Georgia, serif";
+
     ctx.fillText(
       "Scratch to reveal",
       rect.width / 2,
@@ -106,6 +131,7 @@ function ScratchCard() {
 
     ctx.font = "10px Arial, sans-serif";
     ctx.fillStyle = "rgba(91,48,43,.8)";
+
     ctx.fillText(
       "OUR WEDDING DETAILS",
       rect.width / 2,
@@ -117,6 +143,7 @@ function ScratchCard() {
     paintCover();
 
     const card = cardRef.current;
+
     if (!card) return;
 
     const observer = new ResizeObserver(() => {
@@ -129,7 +156,11 @@ function ScratchCard() {
   }, [paintCover]);
 
   const getPoint = (event) => {
-    const rect = canvasRef.current.getBoundingClientRect();
+    const canvas = canvasRef.current;
+
+    if (!canvas) return { x: 0, y: 0 };
+
+    const rect = canvas.getBoundingClientRect();
 
     return {
       x: event.clientX - rect.left,
@@ -139,6 +170,7 @@ function ScratchCard() {
 
   const scratchAt = (point) => {
     const canvas = canvasRef.current;
+
     if (!canvas || revealed) return;
 
     const ctx = canvas.getContext("2d", {
@@ -152,7 +184,12 @@ function ScratchCard() {
 
     if (lastPointRef.current) {
       ctx.beginPath();
-      ctx.moveTo(lastPointRef.current.x, lastPointRef.current.y);
+
+      ctx.moveTo(
+        lastPointRef.current.x,
+        lastPointRef.current.y
+      );
+
       ctx.lineTo(point.x, point.y);
       ctx.stroke();
     } else {
@@ -166,6 +203,7 @@ function ScratchCard() {
 
   const measureScratch = () => {
     const canvas = canvasRef.current;
+
     if (!canvas || revealed) return;
 
     const ctx = canvas.getContext("2d", {
@@ -184,12 +222,17 @@ function ScratchCard() {
 
     for (let i = 3; i < pixels.length; i += 128) {
       total += 1;
-      if (pixels[i] < 80) transparent += 1;
+
+      if (pixels[i] < 80) {
+        transparent += 1;
+      }
     }
 
     const amount = Math.min(
       100,
-      Math.round((transparent / Math.max(total, 1)) * 100)
+      Math.round(
+        (transparent / Math.max(total, 1)) * 100
+      )
     );
 
     setProgress(amount);
@@ -207,7 +250,10 @@ function ScratchCard() {
     drawingRef.current = true;
     lastPointRef.current = null;
 
-    event.currentTarget.setPointerCapture?.(event.pointerId);
+    event.currentTarget.setPointerCapture?.(
+      event.pointerId
+    );
+
     scratchAt(getPoint(event));
   };
 
@@ -215,6 +261,7 @@ function ScratchCard() {
     if (!drawingRef.current || revealed) return;
 
     event.preventDefault();
+
     scratchAt(getPoint(event));
   };
 
@@ -234,27 +281,36 @@ function ScratchCard() {
 
   return (
     <div
-      className={`scratch-card ${revealed ? "is-revealed" : ""}`}
+      className={`scratch-card ${
+        revealed ? "is-revealed" : ""
+      }`}
       ref={cardRef}
     >
       <div className="scratch-card-inner">
-        <div className="scratch-reveal-content" aria-live="polite">
+        <div
+          className="scratch-reveal-content"
+          aria-live="polite"
+        >
           <span className="reveal-eyebrow">
             THE DAY WE SAY I DO
           </span>
 
           <strong className="revealed-date">
-            {WEDDING.day} · 12 · {WEDDING.year}
+            {numericDate}
           </strong>
 
           <span className="revealed-names">
-            {WEDDING.groom} <i>&</i> {WEDDING.bride}
+            {bride} <i>&</i> {groom}
           </span>
 
           <div className="revealed-location">
-            <span className="revealed-location-icon">⌖</span>
-            <strong>{WEDDING.location}</strong>
-            <small>{WEDDING.venue}</small>
+            <span className="revealed-location-icon">
+              ⌖
+            </span>
+
+            <strong>{venueName}</strong>
+
+            <small>{venueAddress}</small>
           </div>
 
           <span className="reveal-heart">♡</span>
@@ -304,14 +360,23 @@ function ScratchCard() {
   );
 }
 
-export default function SaveTheDate() {
+export default function SaveTheDate({ invitation }) {
+  const bride = invitation?.bride || "Bride";
+  const groom = invitation?.groom || "Groom";
+
+  const coupleGif =
+    invitation?.assets?.couple ||
+    "/assets/animated-indian-wedding-couple.gif";
+
   return (
-    <section className="save-date-section" id="save-the-date">
+    <section
+      className="save-date-section"
+      id="save-the-date"
+    >
       <div className="save-date-decoration save-date-decoration-one" />
       <div className="save-date-decoration save-date-decoration-two" />
 
       <div className="save-date-shell">
-
         <header className="save-date-heading">
           <span className="save-date-kicker">
             <i />
@@ -324,11 +389,11 @@ export default function SaveTheDate() {
           <span className="heading-heart">♡</span>
         </header>
 
-        {/* Animated couple and names only */}
+        {/* Animated couple and dynamic names */}
         <div className="save-date-artwork">
           <img
-            src={COUPLE_GIF}
-            alt="Animated Indian bride and groom in traditional wedding attire"
+            src={coupleGif}
+            alt={`Animated wedding couple for ${bride} and ${groom}`}
             className="save-date-couple-gif"
             loading="lazy"
           />
@@ -341,9 +406,9 @@ export default function SaveTheDate() {
             </span>
 
             <h3>
-              {WEDDING.groom}
+              {bride}
               <span> & </span>
-              {WEDDING.bride}
+              {groom}
             </h3>
 
             <div className="artwork-divider">
@@ -358,15 +423,14 @@ export default function SaveTheDate() {
           </div>
         </div>
 
-        {/* Date and venue appear only after scratching */}
+        {/* Date and venue appear after scratching */}
         <div className="scratch-heading">
           <span />
           <p>A little surprise for you</p>
           <span />
         </div>
 
-        <ScratchCard />
-
+        <ScratchCard invitation={invitation} />
       </div>
     </section>
   );

@@ -10,13 +10,20 @@ import {
 } from "lucide-react";
 import "./InvitationIntro.css";
 
-const VIDEO_SRC = "/assets/invitation-opening.mp4";
-const POSTER_SRC = "/assets/wedding-hero.png";
-
-export default function InvitationIntro({ onOpen, onStartMusic }) {
+export default function InvitationIntro({
+  invitation,
+  onOpen,
+  onStartMusic,
+}) {
   const videoRef = useRef(null);
   const openedRef = useRef(false);
   const musicStartedRef = useRef(false);
+
+  const bride = invitation?.bride || "Bride";
+  const groom = invitation?.groom || "Groom";
+
+  const VIDEO_SRC = invitation?.assets?.video || "";
+  const POSTER_SRC = invitation?.assets?.poster || invitation?.assets?.hero || "";
 
   const [stage, setStage] = useState("poster");
   const [muted, setMuted] = useState(true);
@@ -24,16 +31,13 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
   const [isLoading, setIsLoading] = useState(false);
   const [videoError, setVideoError] = useState("");
 
-  // Start romantic music and invitation video from the same card tap.
   const startVideo = async () => {
-    // Prevent accidental duplicate music start attempts.
     if (!musicStartedRef.current) {
       musicStartedRef.current = true;
 
       try {
         const musicPromise = onStartMusic?.();
 
-        // Do not block video playback while music starts.
         if (musicPromise?.catch) {
           musicPromise.catch((error) => {
             console.warn("Background music could not start:", error);
@@ -46,8 +50,8 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
 
     const video = videoRef.current;
 
-    if (!video) {
-      setVideoError("Video player is not ready. Please refresh.");
+    if (!video || !VIDEO_SRC) {
+      setVideoError("The invitation video is not configured.");
       setStage("video");
       return;
     }
@@ -62,32 +66,23 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
     video.playsInline = true;
     video.currentTime = 0;
 
-    const playPromise = video.play();
-
     setStage("video");
 
     try {
-      await playPromise;
-
+      await video.play();
       setIsPlaying(true);
       setIsLoading(false);
       setVideoError("");
     } catch (error) {
       console.error("Invitation video playback failed:", error);
-
       setIsPlaying(false);
       setIsLoading(false);
-
-      setVideoError(
-        "Unable to start the invitation video. Please tap retry."
-      );
+      setVideoError("Unable to start the invitation video. Please tap retry.");
     }
   };
 
-  // Retry video without restarting the background song.
   const retryVideo = async () => {
     const video = videoRef.current;
-
     if (!video) return;
 
     setVideoError("");
@@ -98,24 +93,18 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
       video.pause();
       video.currentTime = 0;
       video.muted = muted;
-
       await video.play();
 
       setIsPlaying(true);
       setIsLoading(false);
     } catch (error) {
       console.error("Invitation video retry failed:", error);
-
       setIsPlaying(false);
       setIsLoading(false);
-
-      setVideoError(
-        "Unable to play the video. Please check your MP4 file."
-      );
+      setVideoError("Unable to play the video. Please check the MP4 file.");
     }
   };
 
-  // Toggle invitation video sound.
   const toggleSound = () => {
     const video = videoRef.current;
     const nextMuted = !muted;
@@ -127,21 +116,13 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
     }
   };
 
-  // Enter the wedding website after video ends or visitor skips.
   const enterWedding = () => {
     if (openedRef.current) return;
 
     openedRef.current = true;
 
-    const video = videoRef.current;
-
-    if (video) {
-      video.pause();
-    }
-
+    videoRef.current?.pause();
     setIsPlaying(false);
-
-    // Background music remains playing.
     onOpen?.();
   };
 
@@ -151,13 +132,8 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
     setVideoError("");
   };
 
-  const handleVideoWaiting = () => {
-    setIsLoading(true);
-  };
-
-  const handleVideoCanPlay = () => {
-    setIsLoading(false);
-  };
+  const handleVideoWaiting = () => setIsLoading(true);
+  const handleVideoCanPlay = () => setIsLoading(false);
 
   const handleVideoError = () => {
     const video = videoRef.current;
@@ -170,30 +146,22 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
 
     setIsPlaying(false);
     setIsLoading(false);
-
-    setVideoError(
-      "Unable to load invitation-opening.mp4. Please check the file path and video format."
-    );
+    setVideoError("Unable to load the invitation video. Please check its file path and format.");
   };
 
   useEffect(() => {
     return () => {
-      if (videoRef.current) {
-        videoRef.current.pause();
-      }
+      videoRef.current?.pause();
     };
   }, []);
 
   return (
     <main
       className="invitation-entry"
-      aria-label="Shreyash and Divya wedding invitation"
+      aria-label={`${bride} and ${groom} wedding invitation`}
     >
-      {/* Invitation video stage */}
       <section
-        className={`video-stage ${
-          stage === "video" ? "is-active" : "is-hidden"
-        }`}
+        className={`video-stage ${stage === "video" ? "is-active" : "is-hidden"}`}
         aria-hidden={stage !== "video"}
       >
         <video
@@ -210,14 +178,13 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
           onEnded={enterWedding}
           onError={handleVideoError}
         >
-          <source src={VIDEO_SRC} type="video/mp4" />
-
+          {VIDEO_SRC && <source src={VIDEO_SRC} type="video/mp4" />}
           Your browser does not support HTML5 video.
         </video>
 
         <div className="video-controls">
           <span className="video-couple-mark">
-            SHREYASH <i>&amp;</i> DIVYA
+            {bride.toUpperCase()} <i>&amp;</i> {groom.toUpperCase()}
           </span>
 
           <button
@@ -226,33 +193,20 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
             onClick={toggleSound}
             aria-label={muted ? "Enable sound" : "Mute sound"}
           >
-            {muted ? (
-              <VolumeX size={17} />
-            ) : (
-              <Volume2 size={17} />
-            )}
-
-            <small>
-              {muted ? "SOUND OFF" : "SOUND ON"}
-            </small>
+            {muted ? <VolumeX size={17} /> : <Volume2 size={17} />}
+            <small>{muted ? "SOUND OFF" : "SOUND ON"}</small>
           </button>
         </div>
 
-        {/* Video loading animation */}
         {isLoading && !videoError && (
           <div className="video-loading" role="status">
             <span className="video-loading-icon">
-              <LoaderCircle
-                size={28}
-                className="loading-spin"
-              />
+              <LoaderCircle size={28} className="loading-spin" />
             </span>
-
             <span>Preparing your invitation...</span>
           </div>
         )}
 
-        {/* Video error fallback */}
         {videoError && (
           <div className="video-fallback" role="alert">
             <span className="video-fallback-heart">
@@ -261,14 +215,16 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
 
             <p>{videoError}</p>
 
-            <button
-              type="button"
-              className="intro-primary-button"
-              onClick={retryVideo}
-            >
-              <Play size={15} fill="currentColor" />
-              Retry Video
-            </button>
+            {VIDEO_SRC && (
+              <button
+                type="button"
+                className="intro-primary-button"
+                onClick={retryVideo}
+              >
+                <Play size={15} fill="currentColor" />
+                Retry Video
+              </button>
+            )}
 
             <button
               type="button"
@@ -280,8 +236,7 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
           </div>
         )}
 
-        {/* Replay video button */}
-        {!isPlaying && !isLoading && !videoError && (
+        {!isPlaying && !isLoading && !videoError && VIDEO_SRC && (
           <button
             type="button"
             className="video-play-again"
@@ -292,7 +247,6 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
           </button>
         )}
 
-        {/* Skip intro */}
         <button
           type="button"
           className="skip-video"
@@ -302,7 +256,6 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
         </button>
       </section>
 
-      {/* Invitation poster stage */}
       <AnimatePresence>
         {stage === "poster" && (
           <motion.section
@@ -310,10 +263,7 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
             className="poster-stage"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{
-              opacity: 0,
-              scale: 1.015,
-            }}
+            exit={{ opacity: 0, scale: 1.015 }}
             transition={{
               duration: 0.65,
               ease: [0.22, 1, 0.36, 1],
@@ -322,26 +272,15 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
             <img
               className="wedding-poster"
               src={POSTER_SRC}
-              alt="Shreyash and Divya wedding invitation"
+              alt={`${bride} and ${groom} wedding invitation`}
               draggable="false"
               fetchPriority="high"
-              onError={() => {
-                console.error(
-                  "Wedding poster could not load:",
-                  POSTER_SRC
-                );
-              }}
+              onError={() => console.error("Wedding poster could not load:", POSTER_SRC)}
             />
 
-            <div
-              className="poster-vignette"
-              aria-hidden="true"
-            />
+            <div className="poster-vignette" aria-hidden="true" />
 
-            <div
-              className="poster-frame"
-              aria-hidden="true"
-            >
+            <div className="poster-frame" aria-hidden="true">
               <span className="poster-frame-corner corner-top-left" />
               <span className="poster-frame-corner corner-top-right" />
               <span className="poster-frame-corner corner-bottom-left" />
@@ -350,15 +289,14 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
 
             <div className="poster-top-mark">
               <Heart size={13} fill="currentColor" />
-              <span>DIVYA &amp; SHREYASH</span>
+              <span>{bride.toUpperCase()} &amp; {groom.toUpperCase()}</span>
             </div>
 
-            {/* This single card click starts BOTH music and video */}
             <button
               type="button"
               className="poster-tap"
               onClick={startVideo}
-              aria-label="Open Shreyash and Divya wedding invitation"
+              aria-label={`Open ${bride} and ${groom} wedding invitation`}
             >
               <span className="poster-play-icon">
                 <Play size={17} fill="currentColor" />
@@ -366,21 +304,13 @@ export default function InvitationIntro({ onOpen, onStartMusic }) {
 
               <span className="poster-tap-copy">
                 <strong>Tap to Open Invitation</strong>
-
-                <small>
-                  Divya & Shreyash
-                </small>
+                <small>{bride} &amp; {groom}</small>
               </span>
 
-              <span
-                className="poster-tap-arrow"
-                aria-hidden="true"
-              >
+              <span className="poster-tap-arrow" aria-hidden="true">
                 ↗
               </span>
             </button>
-
-            
           </motion.section>
         )}
       </AnimatePresence>
